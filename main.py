@@ -1,13 +1,15 @@
-from create_token.create_token import get_client
+from strava_offline import cli
+import subprocess
 
 def main():
-    client = get_client()
-    activities = client.get_activities(limit=2)
-    for activity in activities:
-        print(activity)
-        activity = client.get_activity(activity.id,include_all_efforts=True)
-        print(activity)
-    
+    cmd = "pipenv run python -m strava_offline sqlite"
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    process.wait()
+    cmd = "pipenv run python -m strava_offline gpx"
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    process.wait()
+
+
 
 if __name__ == "__main__":
     main()    
