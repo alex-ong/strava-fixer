@@ -4,9 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-stravalib = "*"
-fastapi = "*"
-uvicorn = "*"
+click = "*"
+click-option-group = "*"
+platformdirs = "*"
+click-config-file = "*"
+pyyaml = "*"
+requests = "*"
+requests-oauthlib = "*"
+bottle = "*"
+tabulate = "*"
+typing-extensions = "*"
 
 [dev-packages]
 
