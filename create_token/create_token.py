@@ -22,7 +22,7 @@ def load_object(filename):
         return loaded_object
 
 
-def check_token():
+def check_token(client):
     if time.time() > client.token_expires_at:
         refresh_response = client.refresh_access_token(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, refresh_token=client.refresh_token)
         access_token = refresh_response['access_token']
@@ -50,14 +50,18 @@ def get_code(state=None, code=None, scope=None):
     save_object(client, 'client.pkl')
     return {"state": state, "code": code, "scope": scope}
 
-try:
-    client = load_object('client.pkl')
-    check_token()
-    athlete = client.get_athlete()
-    print("For {id}, I now have an access token {token}".format(id=athlete.id, token=client.access_token))
-
-    # To upload an activity
-    # client.upload_activity(activity_file, data_type, name=None, description=None, activity_type=None, private=None, external_id=None)
-except FileNotFoundError:
-    print("No access token stored yet, visit http://localhost:8000/ to get it")
-    print("After visiting that url, a pickle file is stored, run this file again to upload your activity")
+def get_client():
+    try:
+        client = load_object('client.pkl')
+        check_token(client)
+        athlete = client.get_athlete()
+        print("For {id}, I now have an access token {token}".format(id=athlete.id, token=client.access_token))
+        return client
+        # To upload an activity
+        # client.upload_activity(activity_file, data_type, name=None, description=None, activity_type=None, private=None, external_id=None)
+    except FileNotFoundError:
+        print("No access token stored yet, visit http://localhost:8000/ to get it")
+        print("After visiting that url, a pickle file is stored, run this file again to upload your activity")
+    
+    
+get_client()
